@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package item.view;
+import Customer.model.CustomerModel;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -111,6 +112,11 @@ public class ItemView extends JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        itemTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                itemTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(itemTable);
 
         itemid.setText(" ID");
@@ -214,6 +220,10 @@ public class ItemView extends JFrame {
         updateItem();
     }//GEN-LAST:event_updateButtonActionPerformed
 
+    private void itemTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemTableMouseClicked
+        searchItem();
+    }//GEN-LAST:event_itemTableMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -304,5 +314,22 @@ public class ItemView extends JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     
+}
+    private void  searchItem() {
+        try {
+            String id=itemTable.getValueAt(itemTable.getSelectedRow(), 0).toString();
+            ItemModel itemmodel=itemcontroller.searchItem(id);
+            if(itemmodel!=null){
+                itemIdText.setText(itemmodel.getID());
+                itemNameText.setText(itemmodel.getItemName());
+                itemPrice.setText(Double.toString(itemmodel.getItemPrice()));
+                itemqtyText.setText(Double.toString(itemmodel.getQty()));
+            } else{
+                JOptionPane.showMessageDialog(this, "Customer Not Found");
+                
+                
+            }   } catch (SQLException ex) {
+            Logger.getLogger(ItemView.class.getName()).log(Level.SEVERE, null, ex);
+        }
 }
 }

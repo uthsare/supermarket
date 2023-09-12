@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package item.controller;
+import Customer.model.CustomerModel;
 import item.model.ItemModel;
 import java.sql.Connection;
 import item.db.DBConnection;
@@ -79,4 +80,18 @@ public class ItemController {
         }
         return itemModels;
 }
+
+    public ItemModel searchItem(String id) throws SQLException{
+Connection connection =DBConnection.getInstance().getConnection();
+String query = "Select * FROM item WHERE id=?";
+
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, id);
+        ResultSet rst =statement.executeQuery();
+while(rst.next()){
+    ItemModel im;
+    im = new ItemModel(rst.getString(1),rst.getString(2),Double.parseDouble(rst.getString(3)),(int)Double.parseDouble(rst.getString(4)));
+    return im;
+}return null;
+      }
 }
